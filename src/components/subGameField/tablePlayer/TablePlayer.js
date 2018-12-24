@@ -36,15 +36,17 @@ function PlayerObject(props) {
                                             <Grid item style={{paddingLeft: "80px"}}>
                                                 <p style={{margin: "0px", padding: "0px", maxWidth: "40vw", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap"}}>{props.name}</p>
                                             </Grid>
-                                            <Grid item style={{position: "absolute", right: '600px'}}>
-                                                <Button style={{padding: "0px", minHeight: "0px"}} onClick={() => {context.handleTurn()}}>Steal</Button>
-                                            </Grid>
-                                            <Grid item style={{position: "absolute", right: '530px'}}>
-                                                <Button style={{padding: "0px", minHeight: "0px"}} onClick={() => {context.handleTurn()}}>Pass</Button>
-                                            </Grid>
-                                            <Grid item style={{position: "absolute", right: '40px'}}>
-                                                <FontAwesomeIcon className={props.turn} icon="sleigh"/>
-                                            </Grid>
+                                            <div style={{display:props.players[props.vkey].sleighDisplay}}>
+                                                <Grid item style={{position: "absolute", right: '600px'}}>
+                                                    <Button style={{padding: "0px", minHeight: "0px"}} onClick={() => {context.handleTurn("steal")}}>Steal</Button>
+                                                </Grid>
+                                                <Grid item style={{position: "absolute", right: '530px'}}>
+                                                    <Button style={{padding: "0px", minHeight: "0px"}} onClick={() => {context.handleTurn("pass")}}>Pass</Button>
+                                                </Grid>
+                                                <Grid  onLoad={() => {console.log("HERE",context.players)}} item style={{position: "absolute", right: '40px'}}>
+                                                    <FontAwesomeIcon className="sleigh" icon="sleigh"/>
+                                                </Grid>
+                                            </div>
                                         </Grid>
                                     </CardContent>
                                 </Grid>
@@ -59,11 +61,21 @@ function PlayerObject(props) {
 
   export default function PlayerTableCard(props) {
         const players = props.players;
-        let playerArray = []
-        Object.keys(players).forEach(key => playerArray.push(players[key]));
-        const playerList = playerArray.map(player => <PlayerObject key={player.name} name={player.name} giftColor={player.giftColor} turn={player.myTurn} />)
+        console.log(players);
+        if(Object.keys(props.players).length === 0){
+            return <div></div>
+        } else {
+            return(<div>{Object.keys(players).map(function(key) {
+                return<PlayerObject 
+                    key={key}
+                    vkey = {key}
+                    name={props.players[key].name}
+                    giftColor={props.players[key].giftColor}
+                    turn={props.players[key].myTurn}
+                    players={props.players} />
+                       
+            })}</div>)
+        }
+        
 
-        return (
-            <div>{playerList}</div>
-        );
 }

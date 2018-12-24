@@ -13,6 +13,8 @@ import {
     Consumer as MainProvider
 } from '../../../util/context/identity/context';
 
+var Snow = require('react-snow-effect');
+
 export default class PlayerCreationPage extends Component {
   render(props) {
     return (
@@ -20,6 +22,7 @@ export default class PlayerCreationPage extends Component {
             {(context) => (
                 <React.Fragment>
                     <div style={{backgroundColor: "green", height: "100vh"}}>
+                    <Snow />
                         <div style={{backgroundImage: `url(${NNList})`, backgroundSize: "800px 700px", backgroundRepeat: "no-repeat", backgroundPosition: "center"}}>
                         <Logo />
                         <div style={{ textAlign: "center", paddingTop: "100px", height: "600px"}}>
