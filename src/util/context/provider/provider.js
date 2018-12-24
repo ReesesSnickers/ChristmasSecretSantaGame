@@ -36,13 +36,12 @@ export default class ContextProvider extends Component {
             <MainProvider value={{
                 state: this.state,
                 handlePlay: () => {
-                    let playerArray = []
 
                     //how many players are there?
                     let playerLength = Object.keys(this.state.players).length
 
                     //who's turn is it?
-                    let currentPlayer = this.state.players[this.state.currentTurn];
+
                     console.log();
                     // Object.keys(this.state.players).forEach(key => playerArray.push(key));
                     // console.log('hanleplay', playerArray)
@@ -71,14 +70,6 @@ export default class ContextProvider extends Component {
                                 watchingPackage: true
                             }
                         }}))
-
-                        //updating the turn
-                        if(playerLength === this.state.currentTurn.length){
-                            //was this the last player in the game? if so, start over
-                            this.setState({ playerArrayCheck: "i"})
-                        } else {
-                            this.setState({ currentTurn: this.state.currentTurn + "i"})
-                        }
                        
                     } else {
                         alert('players are not ready! we need at least 3 elfs to start this Christmas Mission!')
@@ -109,7 +100,7 @@ export default class ContextProvider extends Component {
                                     duplicateName = true;
                                 }
 
-                                if(now == done){
+                                if(now === done){
                                     //loop is done, move on
                                     if(duplicateName){
                                         alert("you can't be named that, sorry, change your birth certificate.");                                
@@ -129,7 +120,6 @@ export default class ContextProvider extends Component {
                             if(Object.keys(giftColor).length !== 0){
 
                                 //go ahead and set the user info...
-                                const players = this.state.players
                                 // const playerArray = []
                                 // playerArray.push(players)
                                 // const checkList = playerArray.some(player => player.name === elfName);
@@ -205,10 +195,28 @@ export default class ContextProvider extends Component {
                     }
 
                     //updating the turn
-                    if(playerLength === this.state.currentTurn.length){
+                    console.log(this.state.currentTurn.length === playerLength)
+                    if(this.state.currentTurn.length === playerLength ){
                         //was this the last player in the game? if so, start over
-                        this.setState({ currentTurn: "i"})
+                        console.log(this.state.players[this.state.currentTurn])
+
+                        this.setState({ currentTurn: "i"}, function(){
+                            this.setState((prevState) => ({players: {
+                                ...prevState.players, [this.state.currentTurn]: {
+                                    name: this.state.players[this.state.currentTurn].name, 
+                                    giftColor: this.state.players[this.state.currentTurn].giftColor,
+                                    sleighDisplay: "",
+                                    steal: this.state.players[this.state.currentTurn].steal,
+                                    pass: this.state.players[this.state.currentTurn].pass,
+                                    watchingPackage: this.state.players[this.state.currentTurn].watchingPackage
+                                }
+                            }}))
+
+                        })
+
+                        
                     } else {
+
                         this.setState({ currentTurn: this.state.currentTurn + "i"}, function(){
                             this.setState((prevState) => ({players: {
                                 ...prevState.players, [this.state.currentTurn]: {
@@ -221,6 +229,7 @@ export default class ContextProvider extends Component {
                                 }
                             }}))
                         })
+
                     }
 
                 }   

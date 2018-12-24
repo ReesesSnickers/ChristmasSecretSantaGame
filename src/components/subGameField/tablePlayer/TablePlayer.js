@@ -61,7 +61,6 @@ function PlayerObject(props) {
 
   export default function PlayerTableCard(props) {
         const players = props.players;
-        console.log(players);
         if(Object.keys(props.players).length === 0){
             return <div></div>
         } else {
