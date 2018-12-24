@@ -12,7 +12,8 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
-    "react-snow-effect": "^1.2.0"
+    "react-snow-effect": "^1.2.0",
+    "react-sound": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

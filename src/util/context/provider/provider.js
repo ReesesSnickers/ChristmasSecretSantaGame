@@ -7,7 +7,7 @@ import {
 export default class ContextProvider extends Component {
     state = {
         inputFieldValue: "",
-        initialColorChoice: {},
+        initialColorChoice: {},//current color choice
         playerCreationPageDisplay: "",
         mainGamePageDisplay: "none",
         players: {},
@@ -26,8 +26,8 @@ export default class ContextProvider extends Component {
         ],
         numberOfPlayers: 0,
         playerArrayList: "",
-        playerArrayCheck: "",
-        
+        playerArrayCheck: "",//key value for current player
+        currentTurn:"i"
     }
 
     render() {
@@ -37,10 +37,19 @@ export default class ContextProvider extends Component {
                 state: this.state,
                 handlePlay: () => {
                     let playerArray = []
-                    Object.keys(this.state.players).forEach(key => playerArray.push(key));
-                    console.log('hanleplay', playerArray)
-                    this.setState({playerArrayList: playerArray})
-                    if (playerArray.length >= 3) {
+
+                    //how many players are there?
+                    let playerLength = Object.keys(this.state.players).length
+
+                    //who's turn is it?
+                    let currentPlayer = this.state.players[this.state.currentTurn];
+                    console.log();
+                    // Object.keys(this.state.players).forEach(key => playerArray.push(key));
+                    // console.log('hanleplay', playerArray)
+                    // this.setState({playerArrayList: playerArray})
+
+                    //change the view
+                    if (playerLength >= 3) {
                         if (this.state.mainGamePageDisplay === "") {
                             this.setState({ mainGamePageDisplay: "none"})
                             this.setState({ playerCreationPageDisplay: ""})
@@ -48,55 +57,111 @@ export default class ContextProvider extends Component {
                             this.setState({ mainGamePageDisplay: ""})
                             this.setState({ playerCreationPageDisplay: "none"})
                         }
+
+                        //updating the players object (who's turn it is)
                         this.setState((prevState) => ({players: {
-                            ...prevState.players, i: {
-                                name: this.state.players[this.state.playerArrayCheck].name, 
-                                giftColor: this.state.players[this.state.playerArrayCheck].giftColor,
-                                myTurn: "sleigh",
+                            ...prevState.players, 
+                           
+                            [this.state.currentTurn]: {
+                                name: this.state.players[this.state.currentTurn].name, 
+                                giftColor: this.state.players[this.state.currentTurn].giftColor,
+                                sleighDisplay: "",
                                 steal: 2,
                                 pass: 2,
                                 watchingPackage: true
                             }
                         }}))
-                        this.setState({ playerArrayCheck: "i"})
+
+                        //updating the turn
+                        if(playerLength === this.state.currentTurn.length){
+                            //was this the last player in the game? if so, start over
+                            this.setState({ playerArrayCheck: "i"})
+                        } else {
+                            this.setState({ currentTurn: this.state.currentTurn + "i"})
+                        }
+                       
                     } else {
                         alert('players are not ready! we need at least 3 elfs to start this Christmas Mission!')
                     }
                 },
                 handleEnlist: (elfName, giftColor) => {
-                    if(this.state.inputFieldValue.length !== 0){
-                        if(this.state.initialColorChoice.length !== 0){
-                            const players = this.state.players
-                            const playerArray = []
-                            playerArray.push(players)
-                            const checkList = playerArray.some(player => player.name === elfName);
-                            if(!checkList){
-                                let currentPlayers = this.state.players;
-                                currentPlayers[this.state.playerArrayCheck + "i"] = {
-                                    name: elfName, 
-                                    giftColor: giftColor,
-                                    myTurn: "no-sleigh",
-                                    steal: 2,
-                                    pass: 2,
-                                    watchingPackage: true
-                                };
-                                let newColorList = this.state.colors.filter(color => color.colorHex !== giftColor);
-                                this.setState({
-                                    players: currentPlayers,
-                                    inputFieldValue: "",
-                                    colors: newColorList,
-                                    numberOfPlayers: this.state.numberOfPlayers + 1,
-                                    playerArrayCheck: this.state.playerArrayCheck + "i"
-                                })
+                    // console.log(giftColor, typeof giftColor)
+                    
+                    //the name inputfield value that's passed
+                    let elfInput = this.state.inputFieldValue;
+                    
+                    
+                      //prevent duplicate names
+                      let duplicateName = false;
+                      let done = Object.keys(this.state.players).length
+                      let now = 0;  
+
+
+                      try{
+                            //for each player in the current list of players
+                            for (var player in this.state.players) {
+
+                                //count the loop
+                                done++
+
+                                //check if the incoming name has been taken or not
+                                if (player.name === elfInput) {
+                                    duplicateName = true;
+                                }
+
+                                if(now == done){
+                                    //loop is done, move on
+                                    if(duplicateName){
+                                        alert("you can't be named that, sorry, change your birth certificate.");                                
+                                    } else {
+                                        //you're gucci, render
+                                        elfInput = ""
+                                    }
+                                }
+                            }
+                      }catch(err){
+                          console.log(err)
+                      }finally{
+                        //if the string wasn't empty...
+                        if(elfInput.length !== 0){
+
+                            //...and a color was passed...
+                            if(Object.keys(giftColor).length !== 0){
+
+                                //go ahead and set the user info...
+                                const players = this.state.players
+                                // const playerArray = []
+                                // playerArray.push(players)
+                                // const checkList = playerArray.some(player => player.name === elfName);
+                              
+                                    let currentPlayers = this.state.players;
+
+                                    currentPlayers[this.state.playerArrayCheck + "i"] = {
+                                        name: elfName, 
+                                        giftColor: giftColor,
+                                        sleighDisplay: "none",
+                                        steal: 2,
+                                        pass: 2,
+                                        watchingPackage: true
+                                    };
+                                    let newColorList = this.state.colors.filter(color => color.colorHex !== giftColor);
+                                    this.setState({
+                                        initialColorChoice : {},
+                                        players: currentPlayers,
+                                        inputFieldValue: "",
+                                        colors: newColorList,
+                                        numberOfPlayers: this.state.numberOfPlayers + 1,
+                                        playerArrayCheck: this.state.playerArrayCheck + "i"
+                                    })
+                                
                             } else {
-                                alert('Sorry, ' + elfName + ' already signed up. Do you go by anything else?')
+                                alert('Do you not know what color the package is?')
                             }
                         } else {
-                            alert('Do you not know what color the package is?')
+                            alert("How do I know who to thank if I don't know your name?")
                         }
-                    } else {
-                        alert("How do I know who to thank if I don't know your name?")
-                    }
+                      }
+
                 },
                 handleNameChange: (event) => {
                     this.setState({inputFieldValue: event.target.value});
@@ -104,51 +169,60 @@ export default class ContextProvider extends Component {
                 handleColorChoice: (event)  => {
                     this.setState({initialColorChoice: event.target.value})
                 },
-                handleTurn: () => {
+                handleTurn: (arg) => {
 
-                    let key = "i"
-                    this.setState((prevState) => ({players: {
-                        ...prevState.players, [key]: {
-                            name: this.state.players.i.name, 
-                            giftColor: this.state.players.i.giftColor,
-                            myTurn: "sleigh",
-                            steal: 2,
-                            pass: 2,
-                            watchingPackage: true
-                        }
-                    }}))
+                    //how many players are there?
+                    let playerLength = Object.keys(this.state.players).length
 
+                    //who's turn is it?
+                    const currentPlayer = this.state.players[this.state.currentTurn];
 
+                            //first thing is to determine the action
+                    if(arg === "steal"){
+                        this.setState((prevState) => ({players: {
+                            ...prevState.players, [this.state.currentTurn]: {
+                                name: this.state.players[this.state.currentTurn].name, 
+                                giftColor: this.state.players[this.state.currentTurn].giftColor,
+                                sleighDisplay: "none",
+                                steal: this.state.players[this.state.currentTurn].steal--,
+                                pass: this.state.players[this.state.currentTurn].pass,
+                                watchingPackage: this.state.players[this.state.currentTurn].watchingPackage
+                            }
+                        }}))
+                    }else if(arg === "pass"){
+                        console.log()
+                        //update this state object
+                        this.setState((prevState) => ({players: {
+                            ...prevState.players, [this.state.currentTurn]: {
+                                name: this.state.players[this.state.currentTurn].name, 
+                                giftColor: this.state.players[this.state.currentTurn].giftColor,
+                                sleighDisplay: "none",
+                                steal: this.state.players[this.state.currentTurn].steal,
+                                pass: this.state.players[this.state.currentTurn].pass--,
+                                watchingPackage: this.state.players[this.state.currentTurn].watchingPackage
+                            }
+                        }}))
+                    }
 
-                    // console.log('handleturn', this.state.playerArrayList)
-                    // let playerNumber = 0
-                    // let currentPlayer = this.state.playerArrayList[playerNumber]
-                    // let list = this.state.players
-                    // console.log('handleturn current', currentPlayer)
-                    // console.log(list + "." + currentPlayer)
+                    //updating the turn
+                    if(playerLength === this.state.currentTurn.length){
+                        //was this the last player in the game? if so, start over
+                        this.setState({ currentTurn: "i"})
+                    } else {
+                        this.setState({ currentTurn: this.state.currentTurn + "i"}, function(){
+                            this.setState((prevState) => ({players: {
+                                ...prevState.players, [this.state.currentTurn]: {
+                                    name: this.state.players[this.state.currentTurn].name, 
+                                    giftColor: this.state.players[this.state.currentTurn].giftColor,
+                                    sleighDisplay: "",
+                                    steal: this.state.players[this.state.currentTurn].steal,
+                                    pass: this.state.players[this.state.currentTurn].pass,
+                                    watchingPackage: this.state.players[this.state.currentTurn].watchingPackage
+                                }
+                            }}))
+                        })
+                    }
 
-                    // const players = this.state.players
-                    // const playerArray = []
-                    // playerArray.push(players)
-                    // console.log('array', playerArray)
-                    // const checkList = playerArray.some(player => player.myTurn === "sleigh");
-                    // console.log('list', checkList)
-
-
-
-
-                    // console.log(this.state.players.[].name)
-                    // this.setState(prevState => ({
-                    //     players: {
-                    //     ...prevState.players, [this.state.playerArrayCheck]: {
-                    //         name: this.state.players.i.name, 
-                    //         giftColor: this.state.players.i.giftColor,
-                    //         myTurn: "no-sleigh",
-                    //         steal: 2,
-                    //         pass: 2,
-                    //         watchingPackage: true
-                    //     }
-                    // }}))
                 }   
             }}>
                 {this.props.children}
