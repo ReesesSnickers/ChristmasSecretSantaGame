@@ -64,7 +64,7 @@ function PlayerObject(props) {
         if(Object.keys(props.players).length === 0){
             return <div></div>
         } else {
-            return(<div>{Object.keys(players).map(function(key) {
+            return(<div >{Object.keys(players).map(function(key) {
                 return<PlayerObject 
                     key={key}
                     vkey = {key}

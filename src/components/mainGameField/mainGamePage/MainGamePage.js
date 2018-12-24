@@ -21,8 +21,8 @@ export default class MainGamePage extends Component {
                             <div style={{backgroundImage: `url(${Fireplace})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", height: "67vh"}}>
                                 <Logo />
                             </div>
-                            <div style={{backgroundColor: "red", height: "33vh"}}>
-                                <Grid container style={{color: "white", paddingBottom: "5px"}}>
+                            <div style={{backgroundColor: "red"}}>
+                                <Grid container style={{color: "white"}}>
                                     <Grid item>
                                         <p style={{margin: "0px", paddingTop: "5px", paddingLeft: "20px", paddingBottom: "5px"}}>Current Gift</p>
                                     </Grid>
