@@ -21,7 +21,7 @@ export default class PlayerCreationPage extends Component {
         <MainProvider>
             {(context) => (
                 <React.Fragment>
-                    <div style={{backgroundColor: "green", height: "100vh"}}>
+                    <div style={{backgroundColor: "green", height: "100vw"}}>
                     <Snow />
                         <div style={{backgroundImage: `url(${NNList})`, backgroundSize: "800px 700px", backgroundRepeat: "no-repeat", backgroundPosition: "center"}}>
                         <Logo />
@@ -29,11 +29,11 @@ export default class PlayerCreationPage extends Component {
                             <Form handleEnroll={this.props.handleEnroll}/>
                             <div style={{}}>
                                 <p style={{fontFamily:"Cookie", color: "#A0522D", fontSize: "40px", margin: "0px"}}>So.. Who signed up to be Santa's little helpers for this trip?</p>
-                                <div style={{ marginLeft: "300px", marginRight: "300px", height: "200px", }}>
+                                <div style={{ marginLeft: "200px", marginRight: "200px", height: "200px", maxHeight: "200px" }}>
                                     <PlayingList players={context.state.players} />
                                 </div>
                             </div>
-                            <Button variant="contained" style={{position: "absolute", left: "62vw", bottom: "28vh", fontFamily:"Cookie", backgroundColor: "#800000", height: "35px", width: "125px", color: "#F4A460", fontSize: "15px", fontWeight: "bold"}} onClick={() => {context.handlePlay()}}>Play</Button>
+                            <Button variant="contained" style={{fontFamily:"Cookie", backgroundColor: "#800000", height: "35px", width: "125px", color: "#F4A460", fontSize: "15px", fontWeight: "bold"}} onClick={() => {context.handlePlay()}}>Play</Button>
                         </div>
                         </div>
                     </div>

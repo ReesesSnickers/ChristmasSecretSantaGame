@@ -180,7 +180,6 @@ export default class ContextProvider extends Component {
                             }
                         }}))
                     }else if(arg === "pass"){
-                        console.log()
                         //update this state object
                         this.setState((prevState) => ({players: {
                             ...prevState.players, [this.state.currentTurn]: {
@@ -195,10 +194,8 @@ export default class ContextProvider extends Component {
                     }
 
                     //updating the turn
-                    console.log(this.state.currentTurn.length === playerLength)
                     if(this.state.currentTurn.length === playerLength ){
                         //was this the last player in the game? if so, start over
-                        console.log(this.state.players[this.state.currentTurn])
 
                         this.setState({ currentTurn: "i"}, function(){
                             this.setState((prevState) => ({players: {
