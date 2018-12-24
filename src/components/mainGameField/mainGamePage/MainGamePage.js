@@ -1,38 +1,45 @@
 import React, { Component } from 'react';
 
-import PlayerCard from '../player/Player';
 import PlayerTableCard from '../../subGameField/tablePlayer/TablePlayer';
 import Logo from '../logo/Logo';
+import Fireplace from '../../../util/img/fireplace.gif';
 
 import Grid from '@material-ui/core/Grid';
 
+import {
+    Consumer as MainProvider
+} from '../../../util/context/identity/context';
+
+
 export default class MainGamePage extends Component {
-    render() {
+    render(props) {
         return (
             <div>
-                <div style={{backgroundColor: "green", height: "67vh"}}>
-                    <Logo />
-                    <PlayerCard />
-                </div>
-                <div style={{backgroundColor: "red", height: "33vh"}}>
-                <Grid container style={{color: "white", paddingBottom: "5px"}}>
-                    <Grid item>
-                        <p style={{margin: "0px", paddingTop: "5px", paddingLeft: "20px", paddingBottom: "5px"}}>Current Gift</p>
-                    </Grid>
-                    <Grid item>
-                        <p style={{margin: "0px", paddingTop: "5px", paddingLeft: "75px", paddingBottom: "5px"}}>Name</p>
-                    </Grid>
-                    <Grid item>
-                        <p style={{margin: "0px", paddingTop: "5px", paddingLeft: "565px", paddingBottom: "5px"}}>Available Move</p>
-                    </Grid>
-                </Grid>
-                <PlayerTableCard />
-                <PlayerTableCard />
-                <PlayerTableCard />
-                <PlayerTableCard />
-                <PlayerTableCard />
-                <PlayerTableCard />
-                </div>          
+                <MainProvider>
+                    {(context) => (
+                        <React.Fragment>
+                            <div style={{backgroundImage: `url(${Fireplace})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", height: "67vh"}}>
+                                <Logo />
+                            </div>
+                            <div style={{backgroundColor: "red", height: "33vh"}}>
+                                <Grid container style={{color: "white", paddingBottom: "5px"}}>
+                                    <Grid item>
+                                        <p style={{margin: "0px", paddingTop: "5px", paddingLeft: "20px", paddingBottom: "5px"}}>Current Gift</p>
+                                    </Grid>
+                                    <Grid item>
+                                        <p style={{margin: "0px", paddingTop: "5px", paddingLeft: "48px", paddingBottom: "5px"}}>Name</p>
+                                    </Grid>
+                                    <Grid item>
+                                        <p style={{margin: "0px", paddingTop: "5px", paddingLeft: "175px", paddingBottom: "5px", position: "absolute", right: "548px"}}>Available Move</p>
+                                    </Grid>
+                                </Grid>
+
+                                <PlayerTableCard players={context.state.players} handleturn={context.handleTurn}/>
+                                
+                            </div>
+                        </React.Fragment>
+                    )}
+                </MainProvider>         
             </div>
         );
     }

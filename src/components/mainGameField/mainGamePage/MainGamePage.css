@@ -1,0 +1,46 @@
+.no-sleigh {
+    color: white;
+}
+
+.sleigh {
+	animation-name: color_change;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+@-webkit-keyframes color_change {
+	0% { color: orange; }
+    25% { color: red; }
+    50% { color: purple; }
+    75% { color: green; }
+    100% { color: blue; }
+}
+@-moz-keyframes color_change {
+	0% { color: orange; }
+    25% { color: red; }
+    50% { color: purple; }
+    75% { color: green; }
+    100% { color: blue; }
+}
+@-ms-keyframes color_change {
+	0% { color: orange; }
+    25% { color: red; }
+    50% { color: purple; }
+    75% { color: green; }
+    100% { color: blue; }
+}
+@-o-keyframes color_change {
+	0% { color: orange; }
+    25% { color: red; }
+    50% { color: purple; }
+    75% { color: green; }
+    100% { color: blue; }
+}
+@keyframes color_change {
+	0% { color: orange; }
+    25% { color: red; }
+    50% { color: purple; }
+    75% { color: green; }
+    100% { color: blue; }
+}

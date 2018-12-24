@@ -2,26 +2,41 @@ import React, { Component } from 'react';
 
 import Logo from '../../mainGameField/logo/Logo';
 import Form from '../form/PlayerForm';
-import Peppermint from '../../../util/img/peppermint.gif';
+import NNList from '../../../util/img/Scroll.png';
+import './PlayerCreationsPage.css';
 
 import Button from '@material-ui/core/Button';
+
+import PlayingList from '../playingPlayerList/PlayingList';
+
+import {
+    Consumer as MainProvider
+} from '../../../util/context/identity/context';
 
 export default class PlayerCreationPage extends Component {
   render(props) {
     return (
-        <div style={{backgroundColor: "red", height: "100vh"}} onLoad={() =>{console.log(this.props)}}>
-            <Logo />
-            <div style={{textAlign: "center", paddingTop: "75px"}}>
-                <Form handleEnroll={this.props.handleEnroll}/>
-                <div>
-                    <p style={{color: "green", fontSize: "30px", fontWeight: "bold", webkitTextStrokeWidth: "1px", webkitTextStrokeColor: "black", textShadow: "3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000"}}>So.. Who signed up to be Santa's little helpers for this trip?</p>
-                    <div style={{backgroundColor: "yellow", marginLeft: "300px", marginRight: "300px", height: "200px", marginBottom: "2.7em"}}>
-                        Player List area
+        <MainProvider>
+            {(context) => (
+                <React.Fragment>
+                    <div style={{backgroundColor: "green", height: "100vh"}}>
+                        <div style={{backgroundImage: `url(${NNList})`, backgroundSize: "800px 700px", backgroundRepeat: "no-repeat", backgroundPosition: "center"}}>
+                        <Logo />
+                        <div style={{ textAlign: "center", paddingTop: "100px", height: "600px"}}>
+                            <Form handleEnroll={this.props.handleEnroll}/>
+                            <div style={{}}>
+                                <p style={{fontFamily:"Cookie", color: "#A0522D", fontSize: "40px", margin: "0px"}}>So.. Who signed up to be Santa's little helpers for this trip?</p>
+                                <div style={{ marginLeft: "300px", marginRight: "300px", height: "200px", }}>
+                                    <PlayingList players={context.state.players} />
+                                </div>
+                            </div>
+                            <Button variant="contained" style={{position: "absolute", left: "62vw", bottom: "28vh", fontFamily:"Cookie", backgroundColor: "#800000", height: "35px", width: "125px", color: "#F4A460", fontSize: "15px", fontWeight: "bold"}} onClick={() => {context.handlePlay()}}>Play</Button>
+                        </div>
+                        </div>
                     </div>
-                </div>
-                <Button variant="contained" style={{backgroundImage: `url(${Peppermint})`, backgroundSize: "cover", height: "60px", width: "200px", color: "green", fontSize: "30px", fontWeight: "bold", webkitTextStrokeWidth: "1px", webkitTextStrokeColor: "black", textShadow: "3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000"}} onClick={this.props.handlePlay}>Play</Button>
-            </div>
-        </div>       
+                </React.Fragment>
+            )}
+        </MainProvider>     
     );
   }
 }
