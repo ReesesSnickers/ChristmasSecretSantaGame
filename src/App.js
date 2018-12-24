@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import MainGamePage from '../src/components/mainGameField/mainGamePage/MainGamePage';
 import PlayerCreationPage from '../src/components/playerCreatorPage/mainPage/PlayerCreationPage';
+import Sound from 'react-sound';
+
+import AudioFile from '../src/util/audio/x_mas complex.x1.mp3'
 
 import {
   Consumer as MainProvider
@@ -20,6 +23,13 @@ class App extends Component {
         <MainProvider>
           {(context) => (
             <React.Fragment>
+              <Sound
+                url={AudioFile}
+                playStatus={Sound.status.PLAYING}
+                autoLoad={true}
+                loop={true}
+              />   
+                         
               <div style={{display: context.state.playerCreationPageDisplay}}>
                 <PlayerCreationPage />
               </div>
